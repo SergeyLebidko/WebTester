@@ -5,6 +5,9 @@ from django.db import models
 class TestGroup(models.Model):
     title = models.CharField(max_length=200, unique=True, null=False, blank=False, verbose_name='Группа тестов')
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = 'Группа тестов'
         verbose_name_plural = 'Группы тестов'
@@ -17,6 +20,9 @@ class Test(models.Model):
     test_group = models.ForeignKey(TestGroup, on_delete=models.CASCADE, null=False, blank=False,
                                    verbose_name='Группа тестов')
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = 'Тест'
         verbose_name_plural = 'Тесты'
@@ -28,6 +34,9 @@ class Question(models.Model):
     title = models.CharField(max_length=1000, null=False, blank=False, verbose_name='Вопрос')
     test = models.ForeignKey(Test, on_delete=models.CASCADE, null=False, blank=False, verbose_name='Тест')
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = 'Вопрос'
         verbose_name_plural = 'Вопросы'
@@ -38,6 +47,9 @@ class Question(models.Model):
 class Answer(models.Model):
     title = models.CharField(max_length=200, null=False, blank=False, verbose_name='Вариант ответа')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, null=False, blank=False, verbose_name='Вопрос')
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         verbose_name = 'Вариант ответа'
