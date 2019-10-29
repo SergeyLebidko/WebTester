@@ -16,7 +16,7 @@ class TestGroup(models.Model):
 
 # Тест
 class Test(models.Model):
-    title = models.CharField(max_length=200, unique=True, null=False, blank=False, verbose_name='Тест')
+    title = models.CharField(max_length=200, unique=False, null=False, blank=False, verbose_name='Название теста')
     test_group = models.ForeignKey(TestGroup, on_delete=models.CASCADE, null=False, blank=False,
                                    verbose_name='Группа тестов')
 
@@ -32,7 +32,7 @@ class Test(models.Model):
 # Вопрос теста
 class Question(models.Model):
     title = models.CharField(max_length=1000, null=False, blank=False, verbose_name='Вопрос')
-    test = models.ForeignKey(Test, on_delete=models.CASCADE, null=False, blank=False, verbose_name='Тест')
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, null=False, blank=False, verbose_name='Название теста')
 
     def __str__(self):
         return self.title
@@ -46,6 +46,7 @@ class Question(models.Model):
 # Вариант ответа
 class Answer(models.Model):
     title = models.CharField(max_length=200, null=False, blank=False, verbose_name='Вариант ответа')
+    is_correct = models.BooleanField(null=False, blank=False, default=False, verbose_name='Верный ответ')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, null=False, blank=False, verbose_name='Вопрос')
 
     def __str__(self):
