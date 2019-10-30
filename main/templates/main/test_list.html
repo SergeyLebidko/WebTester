@@ -1,0 +1,27 @@
+{% extends 'layout/basic.html' %}
+
+{% block header %}
+    <div class="basic_block">
+        <a href="{% url 'main:index' %}">К выбору тем</a>
+    </div>
+    <br>
+{% endblock %}
+
+{% block content %}
+    <div class="basic_block">
+        <p>
+            Тема: {{ selected_group }}
+        </p>
+        {% if tests %}
+            <ul>
+                {% for test in tests %}
+                    <li>{{ test }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="p_with_indent">
+                Извините, но тестов по данной теме в системе нет...
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}

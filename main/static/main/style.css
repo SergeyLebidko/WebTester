@@ -1,0 +1,34 @@
+/* Основной блок */
+.basic_block {
+    font-size: large;
+    background-color: RGB(240, 240, 240);
+    border: 2px solid RGB(220, 220, 220);
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+p.p_with_indent{
+    text-indent: 20px;
+}
+
+/* Основной стиль для ссылок */
+a {
+    color: RGB(70, 70, 70);
+    text-decoration: none;
+}
+
+/* Стиль для ссылок, на которые наведен курсор */
+a:hover {
+    color: RGB(0, 0, 0);
+    text-decoration: underline;
+}
+
+/* Стиль для отдельных элементов списка */
+li{
+    padding-top: 3px;
+    padding-bottom: 3px;
+;
+}
