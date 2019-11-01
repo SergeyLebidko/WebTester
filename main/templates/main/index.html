@@ -10,9 +10,9 @@
             {% for test_group in test_groups %}
                 <li><a href="{% url 'main:test_list' test_group_id=test_group.pk %}">{{ test_group }}</a></li>
             {% empty %}
-                <p class="p_with_indent">
+                <div class="block_with_margin">
                     Извините, но на сайт пока не добавлены темы для тестирования...
-                </p>
+                </div>
             {% endfor %}
         </ul>
     </div>

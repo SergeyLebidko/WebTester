@@ -10,11 +10,12 @@
     width: 50%;
 }
 
-p.p_with_indent{
-    text-indent: 20px;
+/* Блок для вывода вопросов теста */
+.block_with_margin{
+    margin-left: 20px;
 }
 
-/* Основной стиль для ссылок */
+/* Стиль для ссылок */
 a {
     color: RGB(70, 70, 70);
     text-decoration: none;

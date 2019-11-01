@@ -12,6 +12,14 @@
             </a>
         </p>
         <hr>
-        Здесь будут выведены вопросы и варианты ответов выбранного теста
+        {% for question in questions %}
+            <div class="block_with_margin">
+                <p>
+                    {{ question }}
+                </p>
+            </div>
+        {% empty %}
+            Извините, но вопросов в данном тесте пока нет...
+        {% endfor %}
     </div>
 {% endblock %}

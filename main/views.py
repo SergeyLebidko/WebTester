@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import TestGroup, Test
+from .models import TestGroup, Test, Question, Answer
 
 
 # Контроллер главной страницы
@@ -19,7 +19,13 @@ def test_list(request, test_group_id):
 
 # Страница теста
 def test_page(request, test_group_id, test_id):
+    # Получаем выбранную группу и выбранный тест и добавляем их в контекст
     selected_group = TestGroup.objects.get(pk=test_group_id)
     selected_test = Test.objects.get(pk=test_id)
     context = {'selected_group': selected_group, 'selected_test': selected_test}
+
+    # Получаем список вопросов и добавляем их в контекст
+    questions = Question.objects.filter(test=selected_test)
+    context['questions'] = questions
+
     return render(request, 'main/test_page.html', context)
