@@ -7,19 +7,35 @@
                 {{ selected_group }}
             </a>
             |
-            <a href="{% url 'main:test_list' test_group_id=selected_group.pk %}">
+            <a href="{% url 'main:test_list' test_group_id=selected_group.pk %}" title="К выбору тестов">
                 {{ selected_test }}
             </a>
         </p>
         <hr>
-        {% for question in questions %}
+        {% if questions|length != 0 %}
             <div class="block_with_margin">
-                <p>
-                    {{ question }}
-                </p>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for question in questions %}
+                        <p>
+                            {{ question.title }}
+                        </p>
+                        <div class="block_with_margin">
+                            {% for answer in question.answers %}
+                                {% autoescape off %}
+                                    {{ answer }}<br>
+                                {% endautoescape %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <br>
+                    <input type="submit" value="Готово!">
+                </form>
             </div>
-        {% empty %}
-            Извините, но вопросов в данном тесте пока нет...
-        {% endfor %}
+        {% else %}
+            <div class="block_with_margin">
+                Извините, но вопросов в данном тесте пока нет...
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
