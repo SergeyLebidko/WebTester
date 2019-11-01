@@ -1,16 +1,18 @@
 {% extends 'layout/basic.html' %}
 
-{% block header %}
-{% endblock %}
-
 {% block content %}
     <div class="basic_block">
         <p>
-            Выберите тему:
+            Темы:
         </p>
+        <hr>
         <ul>
             {% for test_group in test_groups %}
                 <li><a href="{% url 'main:test_list' test_group_id=test_group.pk %}">{{ test_group }}</a></li>
+            {% empty %}
+                <p class="p_with_indent">
+                    Извините, но на сайт пока не добавлены темы для тестирования...
+                </p>
             {% endfor %}
         </ul>
     </div>

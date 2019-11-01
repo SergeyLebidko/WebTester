@@ -1,21 +1,19 @@
 {% extends 'layout/basic.html' %}
 
-{% block header %}
-    <div class="basic_block">
-        <a href="{% url 'main:index' %}">К выбору тем</a>
-    </div>
-    <br>
-{% endblock %}
-
 {% block content %}
     <div class="basic_block">
         <p>
-            Тема: {{ selected_group }}
+            <a href="{% url 'main:index' %}" title="К выбору тем">{{ selected_group }}</a>
         </p>
+        <hr>
         {% if tests %}
             <ul>
                 {% for test in tests %}
-                    <li>{{ test }}</li>
+                    <li>
+                        <a href="{% url 'main:test_page' test_group_id=selected_group.pk test_id=test.pk %}">
+                            {{ test }}
+                        </a>
+                    </li>
                 {% endfor %}
             </ul>
         {% else %}

@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponseBadRequest
 from .models import TestGroup, Test
 
 
@@ -12,10 +11,15 @@ def index(request):
 
 # Контроллер страницы со списком тестов
 def test_list(request, test_group_id):
-    try:
-        selected_group = TestGroup.objects.get(pk=test_group_id)
-    except (TestGroup.DoesNotExist, TestGroup.MultipleObjectsReturned):
-        return HttpResponseBadRequest()
+    selected_group = TestGroup.objects.get(pk=test_group_id)
     tests = Test.objects.filter(test_group=selected_group)
     context = {'tests': tests, 'selected_group': selected_group}
     return render(request, 'main/test_list.html', context)
+
+
+# Страница теста
+def test_page(request, test_group_id, test_id):
+    selected_group = TestGroup.objects.get(pk=test_group_id)
+    selected_test = Test.objects.get(pk=test_id)
+    context = {'selected_group': selected_group, 'selected_test': selected_test}
+    return render(request, 'main/test_page.html', context)

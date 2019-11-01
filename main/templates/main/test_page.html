@@ -1,0 +1,17 @@
+{% extends 'layout/basic.html' %}
+
+{% block content %}
+    <div class="basic_block">
+        <p>
+            <a href="{% url 'main:index' %}" title="К выбору тем">
+                {{ selected_group }}
+            </a>
+            |
+            <a href="{% url 'main:test_list' test_group_id=selected_group.pk %}">
+                {{ selected_test }}
+            </a>
+        </p>
+        <hr>
+        Здесь будут выведены вопросы и варианты ответов выбранного теста
+    </div>
+{% endblock %}
