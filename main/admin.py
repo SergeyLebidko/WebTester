@@ -17,10 +17,11 @@ class AnswerFormSet(BaseInlineFormSet):
 
         for form in self.forms:
             form_data = form.cleaned_data
-            if not form_data['DELETE']:
-                count_answers += 1
-            if form_data['is_correct']:
-                count_correct_answers += 1
+            if form_data:
+                if not form_data['DELETE']:
+                    count_answers += 1
+                if form_data['is_correct']:
+                    count_correct_answers += 1
 
         if not (0 < count_correct_answers < count_answers):
             raise ValidationError('Количество вариантов ответов должно быть больше двух и должен'
