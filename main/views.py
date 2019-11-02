@@ -43,20 +43,56 @@ def test_page(request, test_group_id, test_id):
             block = {'title': question, 'answers': []}
             answers = Answer.objects.filter(question=question)
             type_for_answers = get_type_for_aswers_set(answers)
+            postfix = 0
             for answer in answers:
                 if type_for_answers == 'multiple_type':
                     block['answers'].append(
-                        '<input type="checkbox" name="box_' + str(answer.pk) + '" value="box_' + str(
+                        '<input type="checkbox" name="' + str(question.pk) + '_' + str(postfix) + '" value="' + str(
                             answer.pk) + '">' + answer.title)
+                    postfix += 1
                 if type_for_answers == 'single_type':
                     block['answers'].append(
-                        '<input type="radio" name="rad_' + str(question.pk) + '" value="rad_' + str(
+                        '<input type="radio" name="' + str(question.pk) + '" value="' + str(
                             answer.pk) + '">' + answer.title)
             questions.append(block)
         context['questions'] = questions
 
         return render(request, 'main/test_page.html', context)
     if request.method == 'POST':
-        for p in request.POST:
-            print(p, ' == ', request.POST[p])
-        return HttpResponseRedirect(reverse('main:index'))
+        # Формируем словарь с ответами пользователя
+        user_answers = {}
+
+        for param in request.POST:
+            if not param.startswith('csrf'):
+                question_id = param.split('_')[0]
+                if question_id not in user_answers:
+                    user_answers[question_id] = []
+                user_answers[question_id].append(request.POST[param])
+
+        # Формируем словарь с правильными ответами
+        correct_answers = {}
+        selected_test = Test.objects.get(pk=test_id)
+        questions = Question.objects.filter(test=selected_test)
+
+        for question in questions:
+            answers = Answer.objects.filter(question=question)
+            for answer in answers:
+                if answer.is_correct:
+                    if str(question.pk) not in correct_answers:
+                        correct_answers[str(question.pk)] = []
+                    correct_answers[str(question.pk)].append(str(answer.pk))
+
+        # Если пользователь ответил не на все вопросы - переводим ему на страницу с соответствующим сообщением
+        if len(user_answers) != len(correct_answers):
+            return render(request, 'main/invalid_answer_count.html',
+                          {'test_group_id': test_group_id, 'test_id': test_id})
+
+        # Сверяем ответы
+        # Количество неправильных ответов
+        wrong_answers_count = 0
+        for question_id in correct_answers:
+            if correct_answers[question_id] != user_answers[question_id]:
+                wrong_answers_count += 1
+
+        # Переводим пользователя на страницу статистики
+        return render(request, 'main/test_statistic.html', {'wrong_answers_count': wrong_answers_count})

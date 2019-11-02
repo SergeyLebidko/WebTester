@@ -1,0 +1,14 @@
+{% extends 'layout/basic.html' %}
+
+{%  block content %}
+    <div class="basic_block">
+        Вы ответили не на все вопросы. Тест не засчитан!
+        <a href="{% url 'main:test_page' test_group_id=test_group_id test_id=test_id %}">
+            Попробовать еще раз
+        </a>
+        или
+        <a href="{% url 'main:index' %}">
+            венуться на главную
+        </a>
+    </div>
+{%  endblock %}
