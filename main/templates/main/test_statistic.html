@@ -2,6 +2,18 @@
 
 {% block content %}
     <div class="basic_block">
-        Количество не правильных ответов: {{ wrong_answers_count }}
+        <a href="{% url 'main:test_page' test_group_id=test_group_id test_id=test_id %}">
+            Пройти тест ещё раз
+        </a>
+        |
+        <a href="{% url 'main:index' %}">
+            Вернуться на главную
+        </a>
+        <hr>
+        <div class="block_with_margin">
+            Правильных ответов: {{ correct_answer_count }}
+            <br>
+            Неправильных ответов: {{ incorrect_answer_count }}
+        </div>
     </div>
 {% endblock %}

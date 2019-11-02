@@ -89,10 +89,21 @@ def test_page(request, test_group_id, test_id):
 
         # Сверяем ответы
         # Количество неправильных ответов
-        wrong_answers_count = 0
+        incorrect_answer_count = 0
+        correct_answer_count = 0
         for question_id in correct_answers:
-            if correct_answers[question_id] != user_answers[question_id]:
-                wrong_answers_count += 1
+            if correct_answers[question_id] == user_answers[question_id]:
+                correct_answer_count += 1
+            else:
+                incorrect_answer_count += 1
+
+        # Формируем контекст
+        context = {
+            'correct_answer_count': correct_answer_count,
+            'incorrect_answer_count': incorrect_answer_count,
+            'test_group_id': test_group_id,
+            'test_id': test_id
+        }
 
         # Переводим пользователя на страницу статистики
-        return render(request, 'main/test_statistic.html', {'wrong_answers_count': wrong_answers_count})
+        return render(request, 'main/test_statistic.html', context)

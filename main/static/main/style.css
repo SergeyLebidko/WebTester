@@ -12,12 +12,12 @@
 
 /* Блок для вывода вопросов теста */
 .block_with_margin{
-    margin-left: 20px;
+    margin-left: 25px;
 }
 
 /* Стиль для ссылок */
 a {
-    color: RGB(70, 70, 70);
+    color: RGB(90, 90, 90);
     text-decoration: none;
 }
 
