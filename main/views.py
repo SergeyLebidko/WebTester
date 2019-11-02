@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse_lazy
+from django.contrib.auth.views import LoginView, LogoutView
 from .models import TestGroup, Test, Question, Answer
 
 
@@ -107,3 +107,13 @@ def test_page(request, test_group_id, test_id):
 
         # Переводим пользователя на страницу статистики
         return render(request, 'main/test_statistic.html', context)
+
+
+# Контроллер входа
+class LoginController(LoginView):
+    template_name = 'main/login.html'
+
+
+# Контроллер выхода
+class LogoutController(LogoutView):
+    next_page = reverse_lazy('main:index')

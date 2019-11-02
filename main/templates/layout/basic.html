@@ -16,7 +16,7 @@
             {% if user.is_authenticated %}
                 Добро пожаловать, {{ user }}!
             {% else %}
-                Войти или зарегистрироваться
+                <a href="{% url 'main:login' %}">Войти</a> или зарегистрироваться
             {% endif %}
         </div>
 
@@ -26,7 +26,7 @@
                 {% if user.is_superuser %}
                     <a href="/admin/">Администрирование</a> |
                 {% endif %}
-                Выход
+                <a href="{% url 'main:logout' %}">Выход</a>
             {% endif %}
         </div>
     </div>
