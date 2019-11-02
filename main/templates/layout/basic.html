@@ -11,7 +11,24 @@
 
 {% block header %}
     <div class="basic_block">
-        {{ user }}
+        {# Формируем левый блок #}
+        <div id="left_block">
+            {% if user.is_authenticated %}
+                Добро пожаловать, {{ user }}!
+            {% else %}
+                Войти или зарегистрироваться
+            {% endif %}
+        </div>
+
+        {# Формируем правый блок #}
+        <div id="right_block">
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <a href="/admin/">Администрирование</a> |
+                {% endif %}
+                Выход
+            {% endif %}
+        </div>
     </div>
     <br>
 {% endblock %}

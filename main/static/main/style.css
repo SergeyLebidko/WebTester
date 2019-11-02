@@ -8,11 +8,22 @@
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+    overflow: hidden;
 }
 
 /* Блок для вывода вопросов теста */
-.block_with_margin{
+.block_with_margin {
     margin-left: 25px;
+}
+
+/* Левый блок */
+div#left_block {
+    float: left;
+}
+
+/* Правый блок */
+div#right_block {
+    float: right;
 }
 
 /* Стиль для ссылок */
@@ -28,8 +39,7 @@ a:hover {
 }
 
 /* Стиль для отдельных элементов списка */
-li{
+li {
     padding-top: 3px;
-    padding-bottom: 3px;
-;
+    padding-bottom: 3px;;
 }
