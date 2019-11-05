@@ -1,0 +1,42 @@
+{% extends 'layout/basic.html' %}
+
+{% block content %}
+    <div class="basic_block">
+        {% if not user.is_authenticated %}
+            {# Выводим форму #}
+            <form method="post">
+                {% csrf_token %}
+                <table>
+                    {% for element in form.visible_fields %}
+                        <tr>
+                            <td>
+                                {{ element.label_tag }}
+                            </td>
+                            <td>
+                                {{ element }}<br>
+                                {% if element.errors %}
+                                    <font color="red">
+                                        {% for error in element.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </font>
+                                    <br>
+                                {% endif %}
+                                {{ element.help_text }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="submit" value="Зарегистрироваться">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        {% else %}
+            Вы уже выполнили регистрацию.
+            <a href="{% url 'main:index' %}">Перейти на главную страницу</a>
+        {% endif %}
+    </div>
+{% endblock %}

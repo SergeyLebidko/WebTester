@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from .models import TestGroup, Test, Question, Answer
 
 
@@ -20,6 +24,7 @@ def test_list(request, test_group_id):
 
 
 # Страница теста
+@login_required(login_url=reverse_lazy('main:login'))
 def test_page(request, test_group_id, test_id):
     if request.method == 'GET':
         # Получаем выбранную группу и выбранный тест и добавляем их в контекст
@@ -107,6 +112,23 @@ def test_page(request, test_group_id, test_id):
 
         # Переводим пользователя на страницу статистики
         return render(request, 'main/test_statistic.html', context)
+
+
+# Контроллер регистрации
+def register_user(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            new_user = authenticate(request, username=request.POST['username'], password=request.POST['password1'])
+            login(request, new_user)
+            return HttpResponseRedirect(reverse_lazy('main:index'))
+
+    if request.method == 'GET':
+        form = UserCreationForm()
+
+    context = {'form': form}
+    return render(request, 'main/register_user.html', context)
 
 
 # Контроллер входа

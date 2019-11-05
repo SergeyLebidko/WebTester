@@ -16,7 +16,9 @@
             {% if user.is_authenticated %}
                 Добро пожаловать, {{ user }}!
             {% else %}
-                <a href="{% url 'main:login' %}">Войти</a> или зарегистрироваться
+                <a href="{% url 'main:login' %}">Войти</a>
+                или
+                <a href="{% url 'main:register_user' %}">зарегистрироваться</a>
             {% endif %}
         </div>
 
