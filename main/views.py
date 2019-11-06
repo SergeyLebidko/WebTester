@@ -139,7 +139,7 @@ def statistic_page(request):
     # Во внешнем цикле перебираем все тесты
     for test in Test.objects.all().order_by('title'):
         results = TestResult.objects.filter(test=test, user=request.user).order_by('date_test')
-        if results.count() == 0:
+        if not results.exists():
             continue
 
         # Во внутреннем цикле перебираем все результаты теста, полученного во внешнем цикле и добавляем их в список
@@ -149,6 +149,33 @@ def statistic_page(request):
 
     context = {'passed_tests': passed_tests}
     return render(request, 'main/user_satistic.html', context)
+
+
+# Контроллер страницы поиска
+def find_page(request):
+    if request.method == 'GET':
+        return render(request, 'main/find_page.html', {})
+    if request.method == 'POST':
+        find_text = request.POST['find_text']
+        find_text = find_text.strip().lower()
+        if not find_text:
+            return HttpResponseRedirect(reverse_lazy('main:find'))
+        # Так как в sqlite, используемой в django, поиск без учета регистра не работает с кириллицей
+        # придётся реализовать поиск самому, используя цикл для проверки отдельных элементов
+        find_groups = []
+        for group in TestGroup.objects.all():
+            group_title = group.title.lower()
+            if group_title.find(find_text) != (-1):
+                find_groups.append(group)
+
+        find_tests = []
+        for test in Test.objects.all():
+            test_title = test.title.lower()
+            if test_title.find(find_text) != (-1):
+                find_tests.append(test)
+
+        context = {'find_text': find_text, 'groups': find_groups, 'tests': find_tests}
+        return render(request, 'main/result_find_page.html', context)
 
 
 # Контроллер регистрации

@@ -1,0 +1,11 @@
+{% extends 'layout/basic.html' %}
+
+{% block content %}
+    <div class="basic_block">
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name='find_text' size="35">
+            <input type="submit" value="Найти">
+        </form>
+    </div>
+{% endblock %}

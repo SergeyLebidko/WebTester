@@ -1,0 +1,42 @@
+{% extends 'layout/basic.html' %}
+
+{% block content %}
+    <div class="basic_block">
+        {% if tests or groups %}
+            Вы искали: {{ find_text }}
+            <hr>
+
+            {# Выводим список найденных групп #}
+            {% if groups %}
+                Группы:
+                <ul>
+                    {% for group in groups %}
+                        <li>
+                            <a href="{% url 'main:test_list' test_group_id=group.pk %}">
+                                {{ group }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <br>
+            {% endif %}
+
+            {# Выводим список найденных тестов #}
+            {% if tests %}
+                Тесты:
+                <ul>
+                    {% for test in tests %}
+                        <li>
+                            <a href="{% url 'main:test_page' test_group_id=test.test_group.pk test_id=test.pk %}">
+                                {{ test }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% else %}
+            По вашему запросу ничего не найдено.
+            <a href="{% url 'main:index' %}">Вернуться на главную страницу</a>
+        {% endif %}
+    </div>
+{% endblock %}
