@@ -96,16 +96,20 @@ def test_page(request, test_group_id, test_id):
         # Количество неправильных ответов
         incorrect_answer_count = 0
         correct_answer_count = 0
+        # Список вопросов, на которые были даны неверные ответы
+        incorrect_questions_list = []
         for question_id in correct_answers:
             if correct_answers[question_id] == user_answers[question_id]:
                 correct_answer_count += 1
             else:
                 incorrect_answer_count += 1
+                incorrect_questions_list.append(Question.objects.get(pk=question_id))
 
         # Формируем контекст
         context = {
             'correct_answer_count': correct_answer_count,
             'incorrect_answer_count': incorrect_answer_count,
+            'incorrect_questions_list': incorrect_questions_list,
             'test_group_id': test_group_id,
             'test_id': test_id
         }

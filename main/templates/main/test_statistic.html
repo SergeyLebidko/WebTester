@@ -11,9 +11,26 @@
         </a>
         <hr>
         <div class="block_with_margin">
-            Правильных ответов: {{ correct_answer_count }}
-            <br>
-            Неправильных ответов: {{ incorrect_answer_count }}
+            {% if incorrect_answer_count == 0 %}
+                Вы ответили правильно на все вопросы!
+            {% endif %}
+            {% if correct_answer_count == 0 %}
+                Вы не ответили правильно ни на один вопрос!
+            {% endif %}
+            {% if correct_answer_count > 0 and incorrect_answer_count > 0 %}
+                Правильных ответов: {{ correct_answer_count }}
+                <br>
+                Неправильных ответов: {{ incorrect_answer_count }}
+                <p>
+                    Вы ответили неправильно на следующие вопросы:
+                <ul>
+                    {% for incorrect_questions in incorrect_questions_list %}
+                        <li>{{ incorrect_questions.title }}</li>
+                    {% endfor %}
+
+                </ul>
+                </p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
