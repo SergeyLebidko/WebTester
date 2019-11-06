@@ -2,6 +2,30 @@
 
 {% block content %}
     <div class="basic_block">
-        Здесь будет выводиться статистика пользователя {{ user }}
+        Ваши результаты |
+        <a href="{% url 'main:index' %}">Вернуться на главную</a>
+        <hr>
+        {% if passed_tests %}
+            <ul>
+                {% for passed_test in passed_tests %}
+                    <li>
+                        <a href="{% url 'main:test_page' test_group_id=passed_test.test.test_group.pk test_id=passed_test.test.pk %}">
+                            {{ passed_test.test }}
+                        </a>
+                    </li>
+                    <ul>
+                        {% for result in passed_test.result_test %}
+                            <li>
+                                {{ result.date_test }}<br>
+                                Правильных ответов: {{ result.correct_count }} |
+                                Неправильных ответов: {{ result.incorrect_count }}<br>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </ul>
+        {% else %}
+            Вы не проходили ни одного теста.
+        {% endif %}
     </div>
 {% endblock %}

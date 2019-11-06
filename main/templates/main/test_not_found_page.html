@@ -1,0 +1,8 @@
+{% extends 'layout/basic.html' %}
+
+{% block content %}
+    <div class="basic_block">
+        Извините, но выбранный тест не доступен.
+        <a href="{% url 'main:index' %}">Вернуться на главную страницу</a>
+    </div>
+{% endblock %}

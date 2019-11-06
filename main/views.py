@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from .models import TestGroup, Test, Question, Answer
+from .models import TestGroup, Test, Question, Answer, TestResult
 
 
 # Контроллер главной страницы
@@ -28,9 +28,13 @@ def test_list(request, test_group_id):
 def test_page(request, test_group_id, test_id):
     if request.method == 'GET':
         # Получаем выбранную группу и выбранный тест и добавляем их в контекст
-        selected_group = TestGroup.objects.get(pk=test_group_id)
-        selected_test = Test.objects.get(pk=test_id)
-        context = {'selected_group': selected_group, 'selected_test': selected_test}
+        # Если получить информацию не удалось, то переводим пользователя на страницу с соответствующим сообщением
+        try:
+            selected_group = TestGroup.objects.get(pk=test_group_id)
+            selected_test = Test.objects.get(pk=test_id)
+            context = {'selected_group': selected_group, 'selected_test': selected_test}
+        except (TestGroup.DoesNotExist, Test.DoesNotExist):
+            return render(request, 'main/test_not_found_page.html', {})
 
         # Получаем список вопросов и добавляем их в контекст
         def get_type_for_aswers_set(answers_set):
@@ -105,6 +109,14 @@ def test_page(request, test_group_id, test_id):
                 incorrect_answer_count += 1
                 incorrect_questions_list.append(Question.objects.get(pk=question_id))
 
+        # Добавляем результат пользователя в его статистику
+        test_result = TestResult()
+        test_result.user = request.user
+        test_result.test = selected_test
+        test_result.correct_count = correct_answer_count
+        test_result.incorrect_count = incorrect_answer_count
+        test_result.save()
+
         # Формируем контекст
         context = {
             'correct_answer_count': correct_answer_count,
@@ -121,7 +133,22 @@ def test_page(request, test_group_id, test_id):
 # Страница статистики пользователя
 @login_required(login_url=reverse_lazy('main:login'))
 def statistic_page(request):
-    return render(request, 'main/user_satistic.html', {})
+    # Список пройденных тестов и их результатов
+    passed_tests = []
+
+    # Во внешнем цикле перебираем все тесты
+    for test in Test.objects.all().order_by('title'):
+        results = TestResult.objects.filter(test=test, user=request.user).order_by('date_test')
+        if results.count() == 0:
+            continue
+
+        # Во внутреннем цикле перебираем все результаты теста, полученного во внешнем цикле и добавляем их в список
+        passed_tests.append({'test': test, 'result_test': []})
+        for result in results:
+            passed_tests[-1]['result_test'].append(result)
+
+    context = {'passed_tests': passed_tests}
+    return render(request, 'main/user_satistic.html', context)
 
 
 # Контроллер регистрации

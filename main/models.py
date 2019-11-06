@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Группа тестов
@@ -16,7 +17,7 @@ class TestGroup(models.Model):
 
 # Тест
 class Test(models.Model):
-    title = models.CharField(max_length=200, unique=False, null=False, blank=False, verbose_name='Название теста')
+    title = models.CharField(max_length=200, unique=True, null=False, blank=False, verbose_name='Название теста')
     test_group = models.ForeignKey(TestGroup, on_delete=models.CASCADE, null=False, blank=False,
                                    verbose_name='Группа тестов')
 
@@ -56,3 +57,12 @@ class Answer(models.Model):
         verbose_name = 'Вариант ответа'
         verbose_name_plural = 'Варианты ответа'
         ordering = ['title']
+
+
+# Результат прохождения теста
+class TestResult(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False, verbose_name='Пользователь')
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, null=False, blank=False, verbose_name='Тест')
+    date_test = models.DateTimeField(auto_now_add=True, verbose_name='Дата прохождения теста')
+    correct_count = models.IntegerField(null=False, blank=False, verbose_name='Количество правильных ответов')
+    incorrect_count = models.IntegerField(null=False, blank=False, verbose_name='Количество неправильных ответов')
