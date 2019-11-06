@@ -19,7 +19,9 @@
                     <tr>
                         <td></td>
                         <td>
-                            <input type="hidden" name="next" value="{% url 'main:index' %}">
+                            {% if not next %}
+                                <input type="hidden" name="next" value="{% url 'main:index' %}">
+                            {% endif %}
                             <input type="submit" value="Войти">
                         </td>
                     </tr>

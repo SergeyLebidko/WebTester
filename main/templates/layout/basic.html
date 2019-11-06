@@ -14,7 +14,8 @@
         {# Формируем левый блок #}
         <div id="left_block">
             {% if user.is_authenticated %}
-                Добро пожаловать, {{ user }}!
+                Добро пожаловать,
+                <a href="{% url 'main:statistic_page' %}">{{ user }}</a>!
             {% else %}
                 <a href="{% url 'main:login' %}">Войти</a>
                 или
