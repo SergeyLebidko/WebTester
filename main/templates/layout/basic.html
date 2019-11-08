@@ -15,7 +15,7 @@
         <div id="left_block">
             {% if user.is_authenticated %}
                 Добро пожаловать,
-                <a href="{% url 'main:statistic_page' %}">{{ user }}</a>!
+                <a href="{% url 'main:account' %}">{{ user.first_name }} {{ user.last_name }}</a>!
             {% else %}
                 <a href="{% url 'main:login' %}">Войти</a>
                 или

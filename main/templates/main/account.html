@@ -1,0 +1,15 @@
+{% extends 'layout/basic.html' %}
+
+{% block content %}
+    <div class="basic_block">
+        <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+         Логин: {{ user }}<br>
+        e-mail: {{ user.email }}
+        <hr>
+        <div class="block_with_margin">
+            <a href="{% url 'main:index' %}">Вернуться на глувную</a>
+            <br>
+            <a href="{% url 'main:statistic_page' %}">Моя статистика</a>
+        </div>
+    </div>
+{% endblock %}

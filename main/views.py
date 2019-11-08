@@ -131,6 +131,12 @@ def test_page(request, test_group_id, test_id):
         return render(request, 'main/test_statistic.html', context)
 
 
+# Страница аккаунта
+@login_required(login_url=reverse_lazy('main:login'))
+def account(request):
+    return render(request, 'main/account.html', {})
+
+
 # Страница статистики пользователя
 @login_required(login_url=reverse_lazy('main:login'))
 def statistic_page(request):
