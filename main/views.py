@@ -4,8 +4,9 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from .models import TestGroup, Test, Question, Answer, TestResult
+from .forms import UserRegisterForm
 
 
 # Контроллер главной страницы
@@ -178,10 +179,27 @@ def find_page(request):
         return render(request, 'main/result_find_page.html', context)
 
 
+# Контроллер для обслуживания программного интерфейса
+def api_controller(request):
+    user = None
+    json_data = {}
+    if 'HTTP_USERNAME' in request.META and 'HTTP_PASSWORD' in request.META:
+        username = request.META['HTTP_USERNAME']
+        password = request.META['HTTP_PASSWORD']
+        user = authenticate(request, username=username, password=password)
+
+    if user:
+        json_data['error'] = 'no error'
+    else:
+        json_data['error'] = 'authentication error'
+
+    return JsonResponse(json_data)
+
+
 # Контроллер регистрации
 def register_user(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
             new_user = authenticate(request, username=request.POST['username'], password=request.POST['password1'])
@@ -189,7 +207,7 @@ def register_user(request):
             return HttpResponseRedirect(reverse_lazy('main:index'))
 
     if request.method == 'GET':
-        form = UserCreationForm()
+        form = UserRegisterForm()
 
     context = {'form': form}
     return render(request, 'main/register_user.html', context)

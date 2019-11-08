@@ -16,12 +16,12 @@
     margin-left: 25px;
 }
 
-/* Левый блок */
+/* Левый блок заголовка страницы */
 div#left_block {
     float: left;
 }
 
-/* Правый блок */
+/* Правый блок заголовка страницы */
 div#right_block {
     float: right;
 }
@@ -42,4 +42,9 @@ a:hover {
 li {
     padding-top: 3px;
     padding-bottom: 3px;;
+}
+
+/* Стиль для ячеек таблиц вывода форм */
+.label_cell{
+    vertical-align: top;
 }

@@ -9,20 +9,20 @@
                 <table>
                     {% for element in form.visible_fields %}
                         <tr>
-                            <td>
+                            <td class="label_cell">
                                 {{ element.label_tag }}
                             </td>
                             <td>
                                 {{ element }}<br>
                                 {% if element.errors %}
-                                    <font color="red">
+                                    <font color="red" size="2">
                                         {% for error in element.errors %}
                                             {{ error }}
+                                            {% if not forloop.last %}<br>{% endif %}
                                         {% endfor %}
                                     </font>
                                     <br>
                                 {% endif %}
-                                {{ element.help_text }}
                             </td>
                         </tr>
                     {% endfor %}

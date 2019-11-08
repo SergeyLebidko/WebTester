@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import index, test_list, test_page, LoginController, LogoutController, register_user, statistic_page, \
-    find_page
+    find_page, api_controller
 
 app_name = 'main'
 
@@ -12,5 +12,6 @@ urlpatterns = [
     path('register/', register_user, name='register_user'),
     path('user_statistic/', statistic_page, name='statistic_page'),
     path('find/', find_page, name='find'),
+    path('api/', api_controller),
     path('', index, name='index')
 ]
