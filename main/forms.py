@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from captcha.fields import CaptchaField
 
 
 # Форма для регистрации нового пользователя
@@ -8,6 +9,7 @@ class UserRegisterForm(UserCreationForm):
     first_name = forms.CharField(strip=True, label='Имя')
     last_name = forms.CharField(strip=True, label='Фамилия')
     email = forms.EmailField(label='Адрес электронной почты')
+    captcha = CaptchaField(label='Введите текст с картинки')
 
     class Meta:
         model = User
