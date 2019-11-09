@@ -198,6 +198,17 @@ def api_controller(request):
     else:
         json_data['error'] = 'authentication error'
 
+    # Словарь с содержимым сайта: наименованиями групп тестов и самих тестов
+    site_content = []
+    for group in TestGroup.objects.all():
+        group_content = {'test_group_id': group.pk, 'test_group_name': group.title, 'test_descriptions': []}
+        for test in Test.objects.filter(test_group=group):
+            group_content['test_descriptions'].append(
+                {'test_id': test.pk, 'test_name': test.title}
+            )
+        site_content.append(group_content)
+
+    json_data['site_content'] = site_content
     return JsonResponse(json_data)
 
 
