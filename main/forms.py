@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 
+# Форма для регистрации нового пользователя
 class UserRegisterForm(UserCreationForm):
     first_name = forms.CharField(strip=True, label='Имя')
     last_name = forms.CharField(strip=True, label='Фамилия')
@@ -19,3 +20,15 @@ class UserRegisterForm(UserCreationForm):
         user.last_name = self.cleaned_data['last_name']
         user.email = self.cleaned_data['email']
         user.save()
+
+
+# Форма для редактирования данных пользователя
+class UserEditForm(forms.ModelForm):
+    first_name = forms.CharField(strip=True, label='Имя')
+    last_name = forms.CharField(strip=True, label='Фамилия')
+    email = forms.EmailField(label='Адрес электронной почты')
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email')
+        labels = {'username': 'Логин'}

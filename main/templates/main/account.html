@@ -3,8 +3,12 @@
 {% block content %}
     <div class="basic_block">
         <h3>{{ user.first_name }} {{ user.last_name }}</h3>
-         Логин: {{ user }}<br>
+        Логин: {{ user }}<br>
         e-mail: {{ user.email }}
+        <br>
+        <p>
+            <a href="{% url 'main:edit_account' %}">Изменить данные</a>
+        </p>
         <hr>
         <div class="block_with_margin">
             <a href="{% url 'main:index' %}">Вернуться на глувную</a>

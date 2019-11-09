@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from .models import TestGroup, Test, Question, Answer, TestResult
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserEditForm
 
 
 # Контроллер главной страницы
@@ -216,6 +216,22 @@ def register_user(request):
 
     context = {'form': form}
     return render(request, 'main/register_user.html', context)
+
+
+# Контроллер изменения данных пользователя
+@login_required(login_url=reverse_lazy('main:login'))
+def edit_account(request):
+    if request.method == 'GET':
+        form = UserEditForm(instance=request.user)
+    if request.method == 'POST':
+        user = request.user
+        form = UserEditForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse_lazy('main:account'))
+
+    context = {'form': form}
+    return render(request, 'main/edit_account_data.html', context)
 
 
 # Контроллер входа
