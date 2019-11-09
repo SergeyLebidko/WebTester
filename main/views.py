@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
@@ -242,3 +242,9 @@ class LoginController(LoginView):
 # Контроллер выхода
 class LogoutController(LogoutView):
     next_page = reverse_lazy('main:index')
+
+
+# Контроллер смены пароля
+class PasswordChangeController(PasswordChangeView):
+    template_name = 'main/password_change.html'
+    success_url = reverse_lazy('main:account')

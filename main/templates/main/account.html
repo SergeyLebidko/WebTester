@@ -8,10 +8,12 @@
         <br>
         <p>
             <a href="{% url 'main:edit_account' %}">Изменить данные</a>
+            &nbsp;-&nbsp;
+            <a href="{% url 'main:change_password' %}">Сменить пароль</a>
         </p>
         <hr>
         <div class="block_with_margin">
-            <a href="{% url 'main:index' %}">Вернуться на глувную</a>
+            <a href="{% url 'main:index' %}">Вернуться на главную</a>
             <br>
             <a href="{% url 'main:statistic_page' %}">Моя статистика</a>
         </div>
