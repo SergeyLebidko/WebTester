@@ -14,22 +14,26 @@
 
 Скриншоты проекта приведены ниже:
 
-![screenshot](screen0.jpg)
+![screenshot](screenshots/screen0.jpg)
 
-![screenshot](screen1.jpg)
+![screenshot](screenshots/screen1.jpg)
 
-![screenshot](screen2.jpg)
+![screenshot](screenshots/screen2.jpg)
 
-![screenshot](screen3.jpg)
+![screenshot](screenshots/screen3.jpg)
 
-![screenshot](screen4.jpg)
+![screenshot](screenshots/screen4.jpg)
 
-![screenshot](screen5.jpg)
+![screenshot](screenshots/screen5.jpg)
 
-![screenshot](screen6.jpg)
+![screenshot](screenshots/screen6.jpg)
 
-![screenshot](screen7.jpg)
+![screenshot](screenshots/screen7.jpg)
 
-![screenshot](screen8.jpg)
+![screenshot](screenshots/screen8.jpg)
 
-![screenshot](screen9.jpg)
+![screenshot](screenshots/screen9.jpg)
+
+![screenshot](screenshots/screen10.jpg)
+
+![screenshot](screenshots/screen11.jpg)
