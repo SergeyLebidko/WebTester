@@ -186,30 +186,54 @@ def find_page(request):
 
 # Контроллер для обслуживания программного интерфейса
 def api_controller(request):
-    user = None
+    # Функция проверяет корректность переданной в запросе пары логин/пароль
+    # Если учетные данные корректны - возвращается соответствующий им пользователь, если нет - None
+    def check_user():
+        if 'HTTP_USERNAME' in request.META and 'HTTP_PASSWORD' in request.META:
+            username = request.META['HTTP_USERNAME']
+            password = request.META['HTTP_PASSWORD']
+            user = authenticate(request, username=username, password=password)
+            return user
+        return None
+
+    # Если в запросе нет или некорректные данные пользователя - возвращаем ошибку
+    user = check_user()
+    if not user:
+        return JsonResponse({'error': 'authentication error'})
+
     json_data = {}
-    if 'HTTP_USERNAME' in request.META and 'HTTP_PASSWORD' in request.META:
-        username = request.META['HTTP_USERNAME']
-        password = request.META['HTTP_PASSWORD']
-        user = authenticate(request, username=username, password=password)
+    # В зависимости от запрошенного действия возвращаем результат GET-запроса
+    if request.method == 'GET':
+        if 'action' in request.GET:
+            action = request.GET['action']
 
-    if user:
-        json_data['error'] = 'no error'
-    else:
-        json_data['error'] = 'authentication error'
+            # Возвращаем данные залогинившегося пользователя
+            if action == 'login':
+                json_data['error'] = 'no error'
+                json_data['first_name'] = user.first_name
+                json_data['last_name'] = user.last_name
+                return JsonResponse(json_data)
 
-    # Словарь с содержимым сайта: наименованиями групп тестов и самих тестов
-    site_content = []
-    for group in TestGroup.objects.all():
-        group_content = {'test_group_id': group.pk, 'test_group_name': group.title, 'test_descriptions': []}
-        for test in Test.objects.filter(test_group=group):
-            group_content['test_descriptions'].append(
-                {'test_id': test.pk, 'test_name': test.title}
-            )
-        site_content.append(group_content)
+            # Возвращаем словарь с содержимым сайта: наименованиями групп тестов и самих тестов
+            if action == 'get_content':
+                site_content = []
+                for group in TestGroup.objects.all():
+                    group_content = {'test_group_id': group.pk, 'test_group_name': group.title, 'test_descriptions': []}
+                    for test in Test.objects.filter(test_group=group):
+                        group_content['test_descriptions'].append(
+                            {'test_id': test.pk, 'test_name': test.title}
+                        )
+                    site_content.append(group_content)
+                json_data['error'] = 'no error'
+                json_data['site_content'] = site_content
+                return JsonResponse(json_data)
 
-    json_data['site_content'] = site_content
-    return JsonResponse(json_data)
+    # В зависимости от запрошенного действия возвращаем результат POST-запроса
+    if request.method == 'POST':
+        pass
+
+    # Если действие определить не удалось, то возвращаем ошибку
+    return JsonResponse({'error': 'action not found'})
 
 
 # Контроллер регистрации
